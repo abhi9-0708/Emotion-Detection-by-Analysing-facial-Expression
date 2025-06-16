@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- Prevent caching so that flash messages don’t reappear on refresh -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Member Login</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <!-- Google Fonts: Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome for icons -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    /* Global Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #1f4037, #99f2c8);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    /* Login Container with Glassmorphism */
+    .login-container {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 40px 30px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+      width: 400px;
+      color: #ffffff;
+      text-align: center;
+      animation: slideIn 1s ease;
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    /* Heading and Form Styles */
+    .login-container h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 30px;
+      letter-spacing: 1px;
+    }
+    .input-group-text {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: #ffffff;
+      font-size: 1.1rem;
+    }
+    .form-control {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: #ffffff;
+      font-size: 1.1rem;
+    }
+    .form-control::placeholder {
+      color: #e0e0e0;
+    }
+    /* Button Styles */
+    .btn-primary {
+      background: #0d6efd;
+      border: none;
+      font-size: 1.1rem;
+      padding: 12px;
+      border-radius: 30px;
+      margin-top: 20px;
+      transition: background 0.3s ease;
+    }
+    .btn-primary:hover {
+      background: #0b5ed7;
+    }
+    /* Link Styles */
+    p {
+      margin-top: 20px;
+      font-size: 0.95rem;
+    }
+    a {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+    a:hover {
+      color: #f8f9fa;
+    }
+    .text-center a {
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>Member Login</h2>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    <form method="POST" action="/login">
+      <div class="mb-3 input-group">
+        <span class="input-group-text"><i class="fas fa-user"></i></span>
+        <input type="email" name="email" class="form-control" placeholder="Email" required>
+      </div>
+      <div class="mb-3 input-group">
+        <span class="input-group-text"><i class="fas fa-lock"></i></span>
+        <input type="password" name="password" class="form-control" placeholder="Password" required>
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Login</button>
+    </form>
+    <p class="text-center">Don't have an account? <a href="/signup">Sign Up</a></p>
+  </div>
+  
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <!-- JavaScript to auto-remove flash messages after 3 seconds -->
+  <script>
+    window.onload = function() {
+      setTimeout(function() {
+        const alerts = document.querySelectorAll('.alert');
+        alerts.forEach(alert => alert.remove());
+      }, 3000);
+    };
+  </script>
+</body>
+</html>

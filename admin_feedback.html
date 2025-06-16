@@ -1,0 +1,54 @@
+<!-- templates/admin_feedback.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Feedbacks - Emotion Detection</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <style>
+    body {
+      margin: 20px;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    table {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>All User Feedbacks</h1>
+  </div>
+  <div class="container">
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Email</th>
+          <th>Feedback</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for feedback in feedbacks %}
+        <tr>
+          <td>{{ feedback.id }}</td>
+          <td>{{ feedback.email }}</td>
+          <td>{{ feedback.feedback }}</td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="3" class="text-center">No feedback available.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <a href="{{ url_for('admin') }}" class="btn btn-secondary">Back to Dashboard</a>
+  </div>
+</body>
+</html>

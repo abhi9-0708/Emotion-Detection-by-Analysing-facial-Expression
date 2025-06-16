@@ -1,0 +1,419 @@
+
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Welcome</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    .banner {
+      background: linear-gradient(45deg, #007bff, #6610f2);
+      color: #fff;
+      padding: 2rem;
+      text-align: center;
+    }
+    .sidebar {
+      background-color: #f8f9fa;
+      min-height: 100vh;
+      padding: 1rem;
+      transition: width 0.3s ease;
+      overflow: hidden;
+    }
+    .sidebar:hover {
+      width: 200px;
+    }
+    .sidebar a {
+      color: #333;
+      text-decoration: none;
+    }
+    .menu-button {
+      background-color: #007bff;
+      color: #fff;
+      width: 100%;
+      border: none;
+      margin-bottom: 1rem;
+    }
+    .menu-button:hover {
+      background-color: #0056b3;
+    }
+    .camera-button {
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 1.5rem;
+    }
+    .camera-button:hover {
+      background-color: #218838;
+    }
+    .camera-section video,
+    .camera-section img {
+      border: 2px solid #dee2e6;
+      border-radius: 4px;
+    }
+    /* Custom styling for song anchor tags */
+    a.song-link {
+      display: inline-block;
+      color: #fff;
+      background-color: #007bff;
+      padding: 6px 12px;
+      margin: 4px 0;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+    a.song-link:hover {
+      background-color: #0056b3;
+      text-decoration: none;
+    }
+    /* Add a Font Awesome play icon before each song link */
+    a.song-link::before {
+      content: "\f04b"; 
+      font-family: "Font Awesome 6 Free";
+      font-weight: 900;
+      margin-right: 8px;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="banner">
+    <h1>Welcome, {{ username }}!</h1>
+    <p>"Your journey to a better you starts here."</p>
+  </div>
+
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Sidebar -->
+      <nav class="col-md-2 sidebar d-none d-md-block">
+        <div class="position-sticky">
+          <button class="btn menu-button">Menu</button>
+          <div class="list-group">
+            <a href="{{ url_for('view_logs') }}" class="list-group-item list-group-item-action">View Logs</a>
+            <a href="{{ url_for('edit_profile') }}" class="list-group-item list-group-item-action">Edit Profile</a>
+            <a href="{{ url_for('feedback') }}" class="list-group-item list-group-item-action">FeedBack</a>
+            <a href="{{ url_for('logout') }}" class="list-group-item list-group-item-action">Logout</a>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Main Content -->
+      <main class="col-md-10 ms-sm-auto px-md-4">
+        <div class="camera-section my-4">
+          <div class="d-flex align-items-center mb-3">
+            <button class="camera-button me-3">
+              <i class="fas fa-camera"></i>
+            </button>
+            <span class="fs-4">Upload / Webcam</span>
+          </div>
+          <div class="mb-3">
+            <!-- Image Upload -->
+            <form id="upload-form" enctype="multipart/form-data">
+              <div class="mb-3">
+                <input type="file" name="file" accept="image/*" class="form-control" />
+              </div>
+              <button type="submit" class="btn btn-primary">Upload Image</button>
+            </form>
+          </div>
+          <div class="mb-3">
+            <!-- Buttons to trigger modals -->
+            <button id="webcam-snapshot-btn" class="btn btn-secondary me-2" data-bs-toggle="modal" data-bs-target="#snapshotModal">
+              Use Webcam (Snapshot)
+            </button>
+            <button id="webcam-live-btn" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#liveModal">
+              Live Webcam
+            </button>
+          </div>
+          <div id="result" class="mb-3"></div>
+          <h3>Music Recommendation 🎵</h3>
+          <div id="music-results"></div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Snapshot Modal -->
+  <div class="modal fade" id="snapshotModal" tabindex="-1" aria-labelledby="snapshotModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="snapshotModalLabel">Webcam Snapshot</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="snapshot-close"></button>
+        </div>
+        <div class="modal-body text-center">
+          <video id="snapshot-video" width="320" height="240" autoplay class="mb-2"></video>
+          <canvas id="snapshot-canvas" width="320" height="240" style="display:none;"></canvas>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="capture-btn" class="btn btn-success">Capture</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="snapshot-cancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live Webcam Modal -->
+  <div class="modal fade" id="liveModal" tabindex="-1" aria-labelledby="liveModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="liveModalLabel">Live Webcam Feed</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="live-close"></button>
+        </div>
+        <div class="modal-body text-center">
+          <video id="live-video" width="320" height="240" autoplay class="mb-2"></video>
+          <canvas id="live-canvas" width="320" height="240" style="display:none;"></canvas>
+          <img id="live-feed" src="" alt="Live Feed" class="img-fluid mt-2" />
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="stop-live-btn" class="btn btn-danger">Stop Live</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      let stream = null;
+      let liveStreaming = false;
+
+      // Image upload functionality remains unchanged.
+      const uploadForm = document.getElementById("upload-form");
+      const resultDiv = document.getElementById("result");
+
+      uploadForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        fetch("/upload_image", {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => response.blob())
+          .then((blob) => {
+            const img = document.createElement("img");
+            img.src = URL.createObjectURL(blob);
+            resultDiv.innerHTML = "";
+            resultDiv.appendChild(img);
+
+            // Fetch music recommendations after image processing
+            fetch("/recommend_music")
+              .then((response) => response.json())
+              .then((data) => {
+                const musicDiv = document.getElementById("music-results");
+                if (data.error) {
+                  musicDiv.innerHTML = `<p>Error: ${data.error}</p>`;
+                } else {
+                  let html = `<h3>${data.emotion.charAt(0).toUpperCase() + data.emotion.slice(1)} Music Recommendations:</h3><ol>`;
+                  data.tracks.forEach((track) => {
+                    html += `<li><a class="song-link" href="${track.youtube_url}" target="_blank">${track.name} - ${track.artist}</a></li>`;
+                  });
+                  html += `</ol>`;
+                  musicDiv.innerHTML = html;
+                }
+              })
+              .catch((err) => {
+                console.error("Error fetching music recommendations:", err);
+              });
+          })
+          .catch((error) => console.error("Error uploading image:", error));
+      });
+
+      // --- Snapshot Modal Functionality ---
+      const snapshotModal = new bootstrap.Modal(document.getElementById("snapshotModal"));
+      const snapshotVideo = document.getElementById("snapshot-video");
+      const snapshotCanvas = document.getElementById("snapshot-canvas");
+      const captureBtn = document.getElementById("capture-btn");
+
+      document.getElementById("webcam-snapshot-btn").addEventListener("click", () => {
+        // Start webcam for snapshot when modal opens
+        navigator.mediaDevices
+          .getUserMedia({ video: true })
+          .then((s) => {
+            stream = s;
+            snapshotVideo.srcObject = stream;
+          })
+          .catch((err) => {
+            console.error("Error accessing webcam: ", err);
+            alert("Could not access webcam.");
+          });
+      });
+
+      captureBtn.addEventListener("click", () => {
+        const context = snapshotCanvas.getContext("2d");
+        context.drawImage(snapshotVideo, 0, 0, 320, 240);
+        snapshotCanvas.toBlob((blob) => {
+          const formData = new FormData();
+          formData.append("file", blob, "webcam.jpg");
+          fetch("/upload_image", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.blob())
+            .then((blob) => {
+              const img = document.createElement("img");
+              img.src = URL.createObjectURL(blob);
+              resultDiv.innerHTML = "";
+              resultDiv.appendChild(img);
+
+              // Stop the stream
+              stream.getTracks().forEach((track) => track.stop());
+              snapshotModal.hide();
+
+              // Fetch music recommendations
+              // fetch("/recommend_music")
+              //   .then((response) => response.json())
+              //   .then((data) => {
+              //     const musicDiv = document.getElementById("music-results");
+              //     if (data.error) {
+              //       musicDiv.innerHTML = `<p>Error: ${data.error}</p>`;
+              //     } else {
+              //       let html = `<h3>${data.emotion.charAt(0).toUpperCase() + data.emotion.slice(1)} Music Recommendations:</h3><ol>`;
+              //       data.tracks.forEach((track) => {
+              //         html += `<li><a class="song-link" href="${track.youtube_url}" target="_blank">${track.name} - ${track.artist}</a></li>`;
+              //       });
+              //       html += `</ol>`;
+              //       musicDiv.innerHTML = html;
+              //     }
+              //   })
+              //   .catch((err) => {
+              //     console.error("Error fetching music recommendations:", err);
+              //   });
+
+              // Fetch music recommendations after image processing
+fetch("/recommend_music")
+  .then((response) => response.json())
+  .then((data) => {
+    const musicDiv = document.getElementById("music-results");
+    if (data.error) {
+      musicDiv.innerHTML = `<p>Error: ${data.error}</p>`;
+    } else {
+      let html = `<h3>${data.emotion.charAt(0).toUpperCase() + data.emotion.slice(1)} Music Recommendations:</h3><ol>`;
+      data.tracks.forEach((track) => {
+        html += `
+          <li>
+            <span>${track.name} - ${track.artist}</span>
+            <button class="play-btn" onclick="window.open('${track.youtube_url}', '_blank')" style="margin-left: 10px;">
+              <i class="fa-solid fa-play"></i>
+            </button>
+          </li>`;
+      });
+      html += `</ol>`;
+      musicDiv.innerHTML = html;
+    }
+  })
+  .catch((err) => {
+    console.error("Error fetching music recommendations:", err);
+  });
+
+            })
+            .catch((error) => console.error("Error processing webcam image:", error));
+        }, "image/jpeg");
+      });
+
+      // Stop webcam if modal is closed without capturing
+      document.getElementById("snapshot-close").addEventListener("click", stopStream);
+      document.getElementById("snapshot-cancel").addEventListener("click", stopStream);
+
+      function stopStream() {
+        if (stream) {
+          stream.getTracks().forEach((track) => track.stop());
+        }
+      }
+
+      // --- Live Webcam Modal Functionality ---
+      const liveModal = new bootstrap.Modal(document.getElementById("liveModal"));
+      const liveVideo = document.getElementById("live-video");
+      const liveCanvas = document.getElementById("live-canvas");
+      const liveFeed = document.getElementById("live-feed");
+      const stopLiveBtn = document.getElementById("stop-live-btn");
+
+      document.getElementById("webcam-live-btn").addEventListener("click", () => {
+        navigator.mediaDevices
+          .getUserMedia({ video: true })
+          .then((s) => {
+            stream = s;
+            liveVideo.srcObject = stream;
+            liveStreaming = true;
+            streamLiveFrames();
+          })
+          .catch((err) => {
+            console.error("Error accessing webcam: ", err);
+            alert("Could not access webcam.");
+          });
+      });
+
+      stopLiveBtn.addEventListener("click", () => {
+        stopLiveStream();
+        // After stopping, fetch live summary
+        fetch("/live_summary")
+          .then((response) => response.json())
+          .then((data) => {
+            const musicDiv = document.getElementById("music-results");
+            if (data.error) {
+              musicDiv.innerHTML = `<p>Error: ${data.error}</p>`;
+            } else {
+              let html = `<h3>Live Emotion Summary</h3>`;
+              html += `<p>Emotion Counts:</p><ul>`;
+              for (let key in data.emotion_counts) {
+                html += `<li>${key}: ${data.emotion_counts[key]}</li>`;
+              }
+              html += `</ul>`;
+              html += `<h3>Highest Detected Emotion: ${data.highest_emotion}</h3>`;
+              html += `<h3>Music Recommendations:</h3><ol>`;
+              data.tracks.forEach((track) => {
+                html += `<li><a class="song-link" href="${track.youtube_url}" target="_blank">${track.name} - ${track.artist}</a></li>`;
+              });
+              html += `</ol>`;
+              musicDiv.innerHTML = html;
+            }
+          })
+          .catch((err) => {
+            console.error("Error fetching live summary:", err);
+          });
+      });
+
+      document.getElementById("live-close").addEventListener("click", stopLiveStream);
+
+      function stopLiveStream() {
+        if (stream) {
+          stream.getTracks().forEach((track) => track.stop());
+        }
+        liveStreaming = false;
+        liveModal.hide();
+      }
+
+      /* Stream live frames (approx. 10 frames per second) */
+      function streamLiveFrames() {
+        if (!liveStreaming) return;
+        const context = liveCanvas.getContext("2d");
+        context.drawImage(liveVideo, 0, 0, 320, 240);
+        liveCanvas.toBlob((blob) => {
+          const formData = new FormData();
+          formData.append("frame", blob, "frame.jpg");
+          fetch("/live_webcam", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.blob())
+            .then((blob) => {
+              liveFeed.src = URL.createObjectURL(blob);
+              if (liveStreaming) {
+                setTimeout(streamLiveFrames, 100);
+              }
+            })
+            .catch((error) => console.error("Error streaming frame:", error));
+        }, "image/jpeg");
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Welcome - Emotion Detection</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="static/css/style.css">
+  <style>
+        body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f9;
+      color: #333;
+    }
+
+    /* Header Banner */
+    .header {
+      background-color: #283593;
+      color: #fff;
+      text-align: center;
+      padding: 40px 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 36px;
+      letter-spacing: 1px;
+    }
+    .header p {
+      margin: 10px 0 0;
+      font-style: italic;
+      font-size: 18px;
+    }
+
+    /* Container for Buttons */
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 50px auto;
+      max-width: 600px;
+      padding: 0 20px;
+      margin-top: 0;
+    }
+
+    /* Button Styles */
+    .btn {
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      padding: 15px 30px;
+      margin: 15px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+      width: 100%;
+      max-width: 300px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .btn:hover {
+      background-color: #45a049;
+      transform: translateY(-3px);
+    }
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .admin_pic {
+        display: flex;
+        justify-content: center;
+    }
+
+    .admin_pic img {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        margin-top: 20px;
+        margin-bottom: 0;
+    }
+  </style>
+</head>
+<body style="background-color: rgb(34, 32, 32);">
+  <div class="header">
+    <h1>Welcome Admin!</h1>
+    <p>"Leading with vision, empowering through action."</p>
+  </div>
+  <div class="admin_pic">
+    <img src="/static/images/image.png" alt="admin">
+  </div>
+  <div class="container">
+    <button class="btn" onclick="location.href='update.html'">Update Recommendations</button>
+    <button class="btn" onclick="location.href='/admin_feedback'">Access Feedbacks</button>
+    <button class="btn" onclick="location.href='/delete_user'">Delete User</button>
+    <div class="welcome-box p-4">
+      <a href="/logout" class="btn btn-secondary">Logout</a>
+    </div>
+  </div>
+</body>
+
+<!-- exception net and mobile net 
+good efficiency -->

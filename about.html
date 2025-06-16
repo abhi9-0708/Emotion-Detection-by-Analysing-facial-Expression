@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About - Emotion Detection System</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <!-- Google Fonts: Inter for a modern look -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Global Reset and Base Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      /* font-family: 'Inter', sans-serif; */
+      font-family:Arial, Helvetica, sans-serif;
+      background: #121212;
+      color: #e0e0e0;
+      overflow-x: hidden;
+      position: relative;
+      min-height: 100vh;
+    }
+
+    /* Animated Gradient Background for Body */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, #0f2027, #203a43, #2c5364);
+      z-index: -3;
+      animation: gradientShift 20s ease infinite;
+    }
+    @keyframes gradientShift {
+      0%   { filter: hue-rotate(0deg); }
+      50%  { filter: hue-rotate(180deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
+
+    /* Glassmorphism Container */
+    .about-section {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 40px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+      max-width: 800px;
+      margin: 80px auto;
+      animation: slideInUp 1s ease-out forwards;
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    @keyframes slideInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Section Title */
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #03a9f4;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    /* About Details Grid */
+    .about-details {
+      display: grid;
+      grid-gap: 30px;
+    }
+
+    /* Individual About Item */
+    .about-item {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp 0.8s ease forwards;
+    }
+    /* Stagger the animations for each item */
+    .about-item:nth-child(1) { animation-delay: 0.1s; }
+    .about-item:nth-child(2) { animation-delay: 0.3s; }
+    .about-item:nth-child(3) { animation-delay: 0.5s; }
+    .about-item:nth-child(4) { animation-delay: 0.7s; }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Subtitles (h3) */
+    .about-item h3 {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 10px;
+      border-bottom: 2px solid #657278;
+      display: inline-block;
+      padding-bottom: 5px;
+    }
+
+    /* Paragraphs */
+    .about-item p {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: #cfcfcf;
+      text-align: justify;
+      margin-top: 5px;
+    }
+
+    /* Back Button */
+    .back-btn {
+      display: block;
+      width: fit-content;
+      margin: 40px auto 0;
+      padding: 15px 30px;
+      background: #03a9f4;
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      text-transform: uppercase;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .back-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .section-title {
+        font-size: 2rem;
+      }
+      .about-item h3 {
+        font-size: 1.4rem;
+      }
+      .about-item p {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Extended About Section -->
+  <section class="about-section container">
+    <div class="about-content">
+      <h2 class="section-title">About the Project</h2>
+      <div class="about-details">
+        <article class="about-item">
+          <h3>Introduction</h3>
+          <p>
+            The Emotion Detection System leverages state-of-the-art computer vision and deep learning techniques to interpret facial expressions in real time. Designed to bridge the gap between human emotions and technology, it empowers users to gain deeper insights into non-verbal communication and behavioral cues.
+          </p>
+        </article>
+        <article class="about-item">
+          <h3>Working</h3>
+          <p>
+            The system captures facial images via a live camera feed or image upload, processing them with a sophisticated pre-trained deep learning model. This model, trained on a diverse dataset, accurately categorizes emotions such as sadness, happiness, disgust, anger, neutrality, frustration, and surprise, displaying the results on an intuitive interface.
+          </p>
+        </article>
+        <article class="about-item">
+          <h3>Motivation</h3>
+          <p>
+            Recognizing and understanding non-verbal cues can transform personal and professional interactions. Our motivation is to harness the power of AI to provide objective, real-time insights into human emotions, thereby enhancing mental health support, customer service experiences, and security protocols.
+          </p>
+        </article>
+        <article class="about-item">
+          <h3>Novelty</h3>
+          <p>
+            What sets our system apart is its fusion of robust deep learning algorithms with a sleek, user-friendly design. Unlike traditional, subjective methods, our approach delivers consistent, objective emotion analysis with promising applications in healthcare, education, and human-computer interaction.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Back Button -->
+  <button class="back-btn" onclick="window.location.href='/'">Back to Home</button>
+
+  <!-- Bootstrap Bundle JS with Popper.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

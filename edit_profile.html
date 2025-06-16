@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Edit Profile</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    body {
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: #ffffff;
+      font-family: 'Poppins', sans-serif;
+    }
+    .profile-box {
+      width: 100%;
+      max-width: 420px;
+      padding: 30px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      text-align: center;
+    }
+    h2 {
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    .form-label {
+      font-weight: 500;
+      color: #f1f1f1;
+    }
+    .form-control {
+      border-radius: 8px;
+      border: 2px solid #ffffff;
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+    }
+    .form-control::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+    .form-control:focus {
+      border-color: #ffcc00;
+      box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+    }
+    .btn-primary {
+      background: #ffcc00;
+      border: none;
+      border-radius: 8px;
+      padding: 10px;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+    .btn-primary:hover {
+      background: #e6b800;
+      transform: scale(1.05);
+    }
+    .btn-secondary {
+      background: #ffffff;
+      color: #2a5298;
+      border-radius: 8px;
+      padding: 8px;
+      transition: 0.3s;
+    }
+    .btn-secondary:hover {
+      background: #e0e0e0;
+    }
+    .alert-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1050;
+    }
+    .alert {
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="alert-container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+</div>
+
+<div class="container d-flex justify-content-center align-items-center vh-100">
+  <div class="profile-box">
+    <h2>Edit Profile</h2>
+    <form method="POST">
+      <div class="mb-3 text-start">
+        <label class="form-label">Name</label>
+        <input type="text" name="name" class="form-control" value="{{ user['name'] }}" required>
+      </div>
+      <div class="mb-3 text-start">
+        <label class="form-label">Email (Cannot be changed)</label>
+        <input type="email" class="form-control" value="{{ user['email'] }}" disabled>
+      </div>
+      <div class="mb-4 text-start">
+        <label class="form-label">New Password (Optional)</label>
+        <input type="password" name="password" class="form-control">
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Update Profile</button>
+    </form>
+    <div class="text-center mt-3">
+      <a href="{{ url_for('welcome') }}" class="btn btn-secondary">Cancel</a>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script>
+  setTimeout(() => {
+    document.querySelectorAll('.alert').forEach(alert => new bootstrap.Alert(alert).close());
+  }, 3000);
+</script>
+
+</body>
+</html>
